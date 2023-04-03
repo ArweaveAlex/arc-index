@@ -1,0 +1,19 @@
+{
+  "name": "arc-tools",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index-pools.ts",
+  "scripts": {
+    "test": "node contract-test.js",
+    "index": "node --loader ts-node/esm index-pools.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "arweave": "^1.12.7",
+    "warp-contracts": "^1.2.52"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1"
+  }
+}
