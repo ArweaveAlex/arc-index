@@ -5,15 +5,23 @@
   "main": "index-pools.ts",
   "scripts": {
     "test": "node contract-test.js",
-    "index": "node --loader ts-node/esm index-pools.ts"
+    "index": "node --loader ts-node/esm index-pools.ts",
+    "format": "eslint --fix . && npx prettier --write .",
+    "check-packages": "node src/workers/check-packages.mjs",
+    "prepare": "husky install"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    
     "arweave": "^1.12.7",
     "warp-contracts": "^1.2.52"
   },
   "devDependencies": {
-    "ts-node": "^10.9.1"
+    "husky": "^8.0.3",
+    "ts-node": "^10.9.1",
+    "eslint": "^8.35.0",
+		"eslint-plugin-import": "^2.27.5",
+		"eslint-plugin-simple-import-sort": "^10.0.0"
   }
 }
