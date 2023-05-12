@@ -12,9 +12,6 @@
 	},
 	"author": "",
 	"license": "ISC",
-	"dependencies": {
-		"arcframework": "^1.1.53"
-	},
 	"devDependencies": {
 		"@commitlint/cli": "^17.5.1",
 		"@commitlint/config-conventional": "^17.4.4",
@@ -26,5 +23,8 @@
 		"husky": "^8.0.3",
 		"prettier": "^2.8.3",
 		"ts-loader": "^9.4.2"
+	},
+	"dependencies": {
+		"arcframework": "file:../arc-framework"
 	}
 }
