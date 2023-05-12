@@ -4,8 +4,8 @@
 	"description": "",
 	"main": "src/index.ts",
 	"scripts": {
-		"test": "node contract-test.js",
 		"index": "node --loader ts-node/esm src/index.ts",
+		"start": "ts-node src/index",
 		"format": "eslint --fix . && npx prettier --write .",
 		"check-packages": "node src/workers/check-packages.mjs",
 		"prepare": "husky install"
@@ -13,25 +13,18 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@typescript-eslint/parser": "^5.57.0",
-		"arcframework": "file:.yalc/arcframework",
-		"arweave": "^1.12.7",
-		"warp-contracts": "^1.2.52"
+		"arcframework": "^1.1.50"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.20.12",
-		"@babel/preset-typescript": "^7.21.0",
 		"@commitlint/cli": "^17.5.1",
 		"@commitlint/config-conventional": "^17.4.4",
 		"@typescript-eslint/eslint-plugin": "^5.57.0",
+		"@typescript-eslint/parser": "^5.57.1",
 		"eslint": "^8.35.0",
 		"eslint-plugin-import": "^2.27.5",
 		"eslint-plugin-simple-import-sort": "^10.0.0",
-		"html-webpack-plugin": "^5.5.0",
 		"husky": "^8.0.3",
 		"prettier": "^2.8.3",
-		"process": "^0.11.10",
-		"ts-loader": "^9.4.2",
-		"ts-node": "^10.9.1"
+		"ts-loader": "^9.4.2"
 	}
 }
