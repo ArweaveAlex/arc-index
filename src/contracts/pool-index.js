@@ -9,7 +9,7 @@ async function handle(state, action) {
 			state.pools = [...state.pools, action.input.pool];
 			return { state };
 		case 'update':
-			const index = state.pools.findIndex(pool => pool.id === action.input.pool.id);
+			const index = state.pools.findIndex((pool) => pool.id === action.input.pool.id);
 			if (index !== -1) {
 				state.pools[index] = action.input.pool;
 			}
