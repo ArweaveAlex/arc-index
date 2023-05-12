@@ -63,6 +63,7 @@ export async function indexPools(action: PoolIndexActionType) {
 							pool: {
 								id: fetchedPools[i].id,
 								image: fetchedPools[i].state.image,
+								topics: fetchedPools[i].state.topics ? fetchedPools[i].state.topics : [],
 								totalContributions: fetchedPools[i].state.totalContributions,
 							},
 						});

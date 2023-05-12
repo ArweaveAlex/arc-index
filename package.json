@@ -13,7 +13,7 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"arcframework": "^1.1.51"
+		"arcframework": "^1.1.53"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^17.5.1",
