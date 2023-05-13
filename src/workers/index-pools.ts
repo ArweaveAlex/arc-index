@@ -6,7 +6,7 @@ import fs from 'fs';
 import path from 'path';
 
 const CONTRACT = fs.readFileSync(path.resolve(__dirname, '..', 'contracts', 'pool-index.js')).toString();
-const WALLET_PATH = path.resolve(__dirname, '..', 'wallets', 'wallet.json');
+const WALLET_PATH = path.resolve(__dirname, '..', '..', 'wallets', 'wallet.json');
 
 export async function indexPools(action: PoolIndexActionType) {
 	const arClient = new ArcFramework.ArweaveClient();
