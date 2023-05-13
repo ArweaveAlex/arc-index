@@ -34,8 +34,8 @@ export async function indexPools(action: PoolIndexActionType) {
 				},
 			};
 
-			const { contractTxId } = await arClient.warp.deploy({
-				wallet: new arClient.arweaveSigner(jwk),
+			const { contractTxId } = await arClient.warpDefault.deploy({
+				wallet: new arClient.warpPluginArweaveSigner(jwk),
 				initState: JSON.stringify(contractInitState),
 				src: CONTRACT,
 			});
@@ -49,7 +49,7 @@ export async function indexPools(action: PoolIndexActionType) {
 			const existingPools: ArcFramework.PoolIndexType[] = await ArcFramework.getIndexPools();
 			const fetchedPools: ArcFramework.PoolType[] = await ArcFramework.getPools();
 
-			const indexContract = arClient.warp
+			const indexContract = arClient.warpDefault
 				.contract(ArcFramework.POOL_INDEX_CONTRACT_ID)
 				.setEvaluationOptions({ allowBigInt: true })
 				.connect(jwk);
