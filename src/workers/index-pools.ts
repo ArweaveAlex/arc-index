@@ -56,18 +56,25 @@ export async function indexPools(action: PoolIndexActionType) {
 
 			for (let i = 0; i < fetchedPools.length; i++) {
 				const existingPool = existingPools.find((pool: ArcFramework.PoolIndexType) => pool.id === fetchedPools[i].id);
-				if (!existingPool || existingPool.totalContributions !== fetchedPools[i].state.totalContributions) {
+				if (!existingPool || existingPool.state.totalContributions !== fetchedPools[i].state.totalContributions) {
 					try {
 						await indexContract.writeInteraction({
 							function: !existingPool ? 'add' : 'update',
 							pool: {
 								id: fetchedPools[i].id,
-								image: fetchedPools[i].state.image,
-								topics: fetchedPools[i].state.topics ? fetchedPools[i].state.topics : [],
-								totalContributions: fetchedPools[i].state.totalContributions,
+								state: {
+									image: fetchedPools[i].state.image,
+									ownerMaintained: fetchedPools[i].state.ownerMaintained
+										? fetchedPools[i].state.ownerMaintained
+										: false,
+									timestamp: fetchedPools[i].state.timestamp,
+									title: fetchedPools[i].state.title,
+									topics: fetchedPools[i].state.topics ? fetchedPools[i].state.topics : [],
+									totalContributions: fetchedPools[i].state.totalContributions,
+								},
 							},
 						});
-						console.log(`Pool [${fetchedPools[i].id}] updated in index`);
+						console.log(`Pool [${fetchedPools[i].id}] updated in index (Count: ${i + 1})`);
 					} catch (e: any) {
 						console.error(e);
 					}
