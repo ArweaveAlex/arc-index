@@ -25,6 +25,6 @@
 		"ts-loader": "^9.4.2"
 	},
 	"dependencies": {
-		"arcframework": "^1.1.59"
+		"arcframework": "^1.1.79"
 	}
 }

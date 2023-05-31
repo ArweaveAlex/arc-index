@@ -35,7 +35,7 @@ export async function indexPools(action: PoolIndexActionType) {
 			};
 
 			const { contractTxId } = await arClient.warpDefault.deploy({
-				wallet: new arClient.warpPluginArweaveSigner(jwk),
+				wallet: arClient.warpPluginArweaveSigner(jwk),
 				initState: JSON.stringify(contractInitState),
 				src: CONTRACT,
 			});
@@ -56,6 +56,7 @@ export async function indexPools(action: PoolIndexActionType) {
 
 			for (let i = 0; i < fetchedPools.length; i++) {
 				const existingPool = existingPools.find((pool: ArcFramework.PoolIndexType) => pool.id === fetchedPools[i].id);
+
 				if (!existingPool || existingPool.state.totalContributions !== fetchedPools[i].state.totalContributions) {
 					try {
 						await indexContract.writeInteraction({
