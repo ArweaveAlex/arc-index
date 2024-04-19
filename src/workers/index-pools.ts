@@ -46,8 +46,69 @@ export async function indexPools(action: PoolIndexActionType) {
 		case 'update':
 			console.log('Updating Pool Index ...');
 
+			const fetchedPools: ArcFramework.PoolType[] = [];
+			const poolIds = [];
+			let nextCursor = null;
+			do {
+				const pools = await ArcFramework.getGQLData({
+					ids: null,
+					tagFilters: [
+						{
+							name: ArcFramework.TAGS.keys.appType,
+							values: [
+								ArcFramework.TAGS.values.poolVersions['1.2'],
+								ArcFramework.TAGS.values.poolVersions['1.4'],
+								ArcFramework.TAGS.values.poolVersions['1.5'],
+							],
+						},
+					],
+					uploaders: null,
+					cursor: nextCursor,
+					reduxCursor: null,
+					cursorObject: 'gql' as ArcFramework.CursorObjectKeyType,
+					useArweavePost: true,
+				});
+
+				const fetchedIds = pools.data.map((pool) => {
+					switch (ArcFramework.getTagValue(pool.node.tags, ArcFramework.TAGS.keys.appType)) {
+						case 'Alex-Archiving-Pool-Thread-Testing-v1.0':
+							return pool.node.id;
+						case ArcFramework.TAGS.values.poolVersions['1.2']:
+							return pool.node.id;
+						case ArcFramework.TAGS.values.poolVersions['1.4']:
+							return ArcFramework.getTagValue(pool.node.tags, ArcFramework.TAGS.keys.uploaderTxId);
+						default:
+							const uploaderTxId = ArcFramework.getTagValue(pool.node.tags, ArcFramework.TAGS.keys.uploaderTxId);
+							return uploaderTxId === ArcFramework.STORAGE.none ? pool.node.id : uploaderTxId;
+					}
+				});
+
+				poolIds.push(...fetchedIds);
+				nextCursor = pools.nextCursor;
+			} while (nextCursor && nextCursor !== ArcFramework.CURSORS.end);
+
+			for (let i = 0; i < poolIds.length; i++) {
+				if (poolIds[i]) {
+					await new Promise((r) => setTimeout(r, 1000));
+					try {
+						const contract = arClient.warpDefault.contract(poolIds[i]).setEvaluationOptions({
+							allowBigInt: true,
+						});
+						try {
+							const state = ((await contract.readState()) as any).cachedValue.state;
+							console.log(state);
+
+							fetchedPools.push({ id: poolIds[i], state: state });
+						} catch (error: any) {
+							console.error(error);
+						}
+					} catch (error: any) {
+						console.error(error);
+					}
+				}
+			}
+
 			const existingPools: ArcFramework.PoolIndexType[] = await ArcFramework.getIndexPools();
-			const fetchedPools: ArcFramework.PoolType[] = await ArcFramework.getPools();
 
 			const indexContract = arClient.warpDefault
 				.contract(ArcFramework.POOL_INDEX_CONTRACT_ID)
@@ -58,6 +119,7 @@ export async function indexPools(action: PoolIndexActionType) {
 				const existingPool = existingPools.find((pool: ArcFramework.PoolIndexType) => pool.id === fetchedPools[i].id);
 
 				if (!existingPool || existingPool.state.totalContributions !== fetchedPools[i].state.totalContributions) {
+					await new Promise((r) => setTimeout(r, 1000));
 					try {
 						await indexContract.writeInteraction({
 							function: !existingPool ? 'add' : 'update',
